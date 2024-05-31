@@ -16,7 +16,8 @@ local config = {
         to = Position(33464, 31481, 13),
     },
     teleportTimer = 900, -- seconds, 15 minutes (900s)
-    cooldownTimer = 2 * 60 * 60 -- 2 hours in seconds
+    cooldownTimer = 2 * 60 * 60, -- 2 hours in seconds
+	storage = 10010 -- Needs to be unique, used for player cooldown
 }
 
 local function removeMonsterFromArea(fromPos, toPos)
@@ -52,8 +53,8 @@ function isPositionEqual(pos1, pos2)
 end
 
 function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-    if player:getStorageValue(10010) > os.time() then -- Is player cooldown locked?
-        local remainingCooldown = player:getStorageValue(10010) - os.time()
+    if player:getStorageValue(config.storage) > os.time() then -- Is player cooldown locked?
+        local remainingCooldown = player:getStorageValue(config.storage) - os.time()
         player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You still have a cooldown before you can enter the room again. Time remaining: " .. os.date("!%X", remainingCooldown))
         return true
     end
@@ -77,7 +78,7 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
     for _, positionData in ipairs(config.playerPositions) do
         local tile = Tile(positionData.pos)
         for _, creature in ipairs(tile:getCreatures()) do
-            if creature:isPlayer() and creature:getStorageValue(10010) > os.time() then
+            if creature:isPlayer() and creature:getStorageValue(config.storage) > os.time() then
                 cooldownPlayerOnTile = true
                 break
             end
@@ -117,7 +118,7 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
                         newTeleportPos:sendMagicEffect(CONST_ME_TELEPORT)
 
                         -- Set player cooldown
-                        creature:setStorageValue(10010, os.time() + config.cooldownTimer) -- cooldown timer
+                        creature:setStorageValue(config.storage, os.time() + config.cooldownTimer) -- cooldown timer
 
                         -- Inform player about the time they have to defeat the boss
                         creature:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have " .. config.teleportTimer .. " seconds to defeat the boss before you will be teleported out.")
