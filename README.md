@@ -12,4 +12,4 @@ So from top corner, to bottom corner.
 
 Make sure to change the storage inside config, it has to be unique.
 
-![Uploading image.png…]()
+![image](https://github.com/joelslamospersson/boss_lever/assets/15910972/34e1e0c2-7c99-4c99-b90e-d397b07c197b)
