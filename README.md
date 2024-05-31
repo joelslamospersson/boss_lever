@@ -11,3 +11,5 @@ change this to the corners of the boss room, goes from and to.
 So from top corner, to bottom corner.
 
 Make sure to change the storage inside config, it has to be unique.
+
+![Uploading image.png…]()
